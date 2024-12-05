@@ -1,0 +1,107 @@
+
+<html>
+<head>
+<style>
+    body {
+        text-align: center;
+        font-family:Impact, Haettenschweiler, sans-serif
+    }
+    
+    table {
+        margin: auto;
+        margin-top: 17%;
+        padding: 50px;
+        border: 2px solid #000000;
+        border-radius: 50px;
+        box-shadow: 10 10 10px rgba(0, 249, 62, 0.1);
+        
+
+    }
+    
+    #result {
+        margin-top: 20px;
+        font-size: 1.5em;
+    }
+    
+    .cold {
+        background-color:lightblue
+    }
+    
+    .warm {
+        background-color:rgb(255, 0, 0)
+    }
+    
+    .mild {
+        background-color:rgb(223, 180, 115)
+    }
+</style>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>
+                <h1 style="text-align: center; font-family:'Courier New', Courier, monospace;">🌞 Estação metereológica ❄️</h1>
+                <form id="temperature-form">
+                    <label for="temperature" style="font-family:'Courier New', Courier, monospace;"><b>Temperatura:</b></label>
+                    <input type="number" id="temperature" name="temperature" step="0.01" required>
+                    <label for="unit" style="font-family:'Courier New', Courier, monospace;"><b>Escala:</b></label>
+                    <select id="unit" name="unit">
+                        <option value="celsius">Celsius</option>
+                        <option value="fahrenheit">Fahrenheit</option>
+                        <option value="kelvin">Kelvin</option>
+                    </select>
+                    <button type="button" onclick="convertTemperature()">Converter</button>
+                </form>
+                <div id="result"></div>
+            </td>
+        </tr>
+    </table>
+    <script>function convertTemperature() {
+        let temp = parseFloat(document.getElementById("temperature").value);
+        let unit = document.getElementById("unit").value;
+        let result;
+    
+        if (isNaN(temp)) {
+            alert("Por favor, insira um valor no respetivo campo.");
+            return;
+        }
+    
+        switch (unit) {
+            case "celsius":
+                let fahrenheitFromC = (temp * 9/5) + 32;
+                let kelvinFromC = temp + 273.15;
+                result = `${temp}°C = ${fahrenheitFromC.toFixed(2)}°F = ${kelvinFromC.toFixed(2)}K`;
+                updateBackground(temp, "Celsius");
+                break;
+            case "fahrenheit":
+                let celsiusFromF = (temp - 32) * 5/9;
+                let kelvinFromF = (temp + 459.67) * 5/9;
+                result = `${temp}°F = ${celsiusFromF.toFixed(2)}°C = ${kelvinFromF.toFixed(2)}K`;
+                updateBackground(celsiusFromF, "Celsius");
+                break;
+            case "kelvin":
+                let celsiusFromK = temp - 273.15;
+                let fahrenheitFromK = (temp * 9/5) - 459.67;
+                result = `${temp}K = ${celsiusFromK.toFixed(2)}°C = ${fahrenheitFromK.toFixed(2)}°F`;
+                updateBackground(celsiusFromK, "Celsius");
+                break;
+        }
+    
+        document.getElementById("result").innerText = result;
+    }
+    
+    function updateBackground(temp, unit) {
+        let body = document.body;
+        if (unit === "Celsius") {
+            if (temp <= 10) {
+                body.className = "cold";
+            } else if (temp >= 25) {
+                body.className = "warm";
+            } else {
+                body.className = "mild";
+            }
+        }
+    }
+        </script>
+</body>
+</html>
